@@ -5,6 +5,7 @@ export type ApiMode = "auto" | "localhost" | "lan";
 const API_PORT = 4000;
 const API_MODE: ApiMode = "auto";
 const LAN_IP = "192.168.1.100";
+const FALLBACK_RENDER_API_URL = "https://uscis-tracker-backend.onrender.com";
 
 function getExpoHost() {
   const hostUri = Constants.expoConfig?.hostUri;
@@ -16,7 +17,17 @@ function getExpoHost() {
   return hostUri.split(":")[0];
 }
 
-export function getApiBaseUrl() {
+function getConfiguredProductionApiUrl() {
+  const configuredUrl = Constants.expoConfig?.extra?.apiUrl;
+
+  if (typeof configuredUrl === "string" && configuredUrl.trim()) {
+    return configuredUrl.trim();
+  }
+
+  return FALLBACK_RENDER_API_URL;
+}
+
+function getDevelopmentApiBaseUrl() {
   if (API_MODE === "localhost") {
     return `http://localhost:${API_PORT}`;
   }
@@ -34,26 +45,41 @@ export function getApiBaseUrl() {
   return `http://localhost:${API_PORT}`;
 }
 
+export function getApiBaseUrl() {
+  if (!__DEV__) {
+    return getConfiguredProductionApiUrl();
+  }
+
+  return getDevelopmentApiBaseUrl();
+}
+
 export function getApiConfigSummary() {
   return {
-    mode: API_MODE,
+    mode: __DEV__ ? API_MODE : "production",
     port: API_PORT,
     lanIp: LAN_IP,
     baseUrl: getApiBaseUrl(),
+    productionUrl: getConfiguredProductionApiUrl(),
   };
 }
 
 export function buildNetworkErrorMessage(error: unknown) {
-  const defaultMessage =
-    "Could not reach the backend server. Make sure the backend is running and your phone and computer are on the same Wi-Fi.";
+  const developmentMessage =
+    'Could not reach the backend server. Make sure the backend is running and your phone and computer are on the same Wi-Fi.';
+  const productionMessage =
+    "Could not reach the live backend server. Check that your Render deployment is healthy and the production API URL is configured correctly.";
 
   if (error instanceof Error) {
     if (error.message.includes("Network request failed")) {
-      return `${defaultMessage} If you are using a real phone, switch API_MODE to "lan" and set LAN_IP in config/api.ts.`;
+      if (__DEV__) {
+        return `${developmentMessage} If you are using a real phone, switch API_MODE to "lan" and set LAN_IP in config/api.ts.`;
+      }
+
+      return productionMessage;
     }
 
     return error.message;
   }
 
-  return defaultMessage;
+  return __DEV__ ? developmentMessage : productionMessage;
 }

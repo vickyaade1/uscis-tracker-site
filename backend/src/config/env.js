@@ -12,6 +12,10 @@ const env = {
   uscisCaseStatusUrl:
     process.env.USCIS_CASE_STATUS_URL || "https://api-int.uscis.gov/case-status",
   uscisTimeoutMs: Number(process.env.USCIS_TIMEOUT_MS || 10000),
+  groqApiKey: process.env.GROQ_API_KEY || "",
+  groqApiUrl:
+    process.env.GROQ_API_URL || "https://api.groq.com/openai/v1/chat/completions",
+  groqModel: process.env.GROQ_MODEL || "llama-3.3-70b-versatile",
 };
 
 function hasUscisCredentials() {

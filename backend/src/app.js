@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const { env } = require("./config/env");
 const { getCaseStatus } = require("./controllers/caseStatusController");
+const { getAiSupportReply } = require("./controllers/aiSupportController");
 
 const app = express();
 
@@ -17,5 +18,6 @@ app.get("/health", (req, res) => {
 });
 
 app.post("/api/case-status", getCaseStatus);
+app.post("/api/ai-support", getAiSupportReply);
 
 module.exports = app;

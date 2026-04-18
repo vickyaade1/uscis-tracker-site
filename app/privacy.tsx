@@ -2,30 +2,35 @@ import { Link } from "expo-router";
 import React from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { DEFAULT_LANGUAGE, appText, t } from "../config/i18n";
+import { appText, t } from "../config/i18n";
+import { getFontStyle } from "../config/typography";
+import { useAppLanguage } from "../context/AppLanguageContext";
 
 export default function PrivacyScreen() {
-  const language = DEFAULT_LANGUAGE;
+  const { language } = useAppLanguage();
+  const regularText = getFontStyle(language, "regular");
+  const mediumText = getFontStyle(language, "medium");
+  const boldText = getFontStyle(language, "bold");
 
   return (
     <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.eyebrow}>{t(language, appText.helpLegal)}</Text>
-        <Text style={styles.title}>{t(language, appText.privacyPolicy)}</Text>
+        <Text style={[styles.eyebrow, boldText]}>{t(language, appText.helpLegal)}</Text>
+        <Text style={[styles.title, boldText]}>{t(language, appText.privacyPolicy)}</Text>
 
         <View style={styles.card}>
-          <Text style={styles.paragraph}>{t(language, appText.privacyIntro)}</Text>
-          <Text style={styles.paragraph}>
+          <Text style={[styles.paragraph, regularText]}>{t(language, appText.privacyIntro)}</Text>
+          <Text style={[styles.paragraph, regularText]}>
             {t(language, appText.privacyReceiptNumbers)}
           </Text>
-          <Text style={styles.paragraph}>{t(language, appText.privacyAnalytics)}</Text>
-          <Text style={styles.paragraph}>{t(language, appText.privacyLegalAdvice)}</Text>
-          <Text style={styles.noticeText}>{t(language, appText.privacyEditLater)}</Text>
+          <Text style={[styles.paragraph, regularText]}>{t(language, appText.privacyAnalytics)}</Text>
+          <Text style={[styles.paragraph, regularText]}>{t(language, appText.privacyLegalAdvice)}</Text>
+          <Text style={[styles.noticeText, mediumText]}>{t(language, appText.privacyEditLater)}</Text>
         </View>
 
         <Link href="/support" asChild>
           <TouchableOpacity style={styles.secondaryButton}>
-            <Text style={styles.secondaryButtonText}>
+            <Text style={[styles.secondaryButtonText, boldText]}>
               {t(language, appText.openSupportScreen)}
             </Text>
           </TouchableOpacity>
@@ -33,7 +38,9 @@ export default function PrivacyScreen() {
 
         <Link href="/(tabs)" asChild>
           <TouchableOpacity style={styles.primaryButton}>
-            <Text style={styles.primaryButtonText}>{t(language, appText.backToHome)}</Text>
+            <Text style={[styles.primaryButtonText, boldText]}>
+              {t(language, appText.backToHome)}
+            </Text>
           </TouchableOpacity>
         </Link>
       </ScrollView>

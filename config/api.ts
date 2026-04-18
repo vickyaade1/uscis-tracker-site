@@ -5,7 +5,7 @@ export type ApiMode = "auto" | "localhost" | "lan";
 const API_PORT = 4000;
 const API_MODE: ApiMode = "auto";
 const LAN_IP = "192.168.1.100";
-const FALLBACK_RENDER_API_URL = "https://uscis-tracker-backend.onrender.com";
+const FALLBACK_RENDER_API_URL = "https://uscis-tracker-site.onrender.com";
 
 function getExpoHost() {
   const hostUri = Constants.expoConfig?.hostUri;

@@ -1,4 +1,4 @@
-const DEFAULT_RENDER_API_URL = "https://uscis-tracker-backend.onrender.com";
+const DEFAULT_RENDER_API_URL = "https://uscis-tracker-site.onrender.com";
 
 module.exports = ({ config }) => ({
   ...config,

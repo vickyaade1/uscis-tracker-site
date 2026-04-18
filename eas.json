@@ -11,7 +11,7 @@
     },
     "production": {
       "env": {
-        "RENDER_API_URL": "https://uscis-tracker-backend.onrender.com"
+        "RENDER_API_URL": "https://uscis-tracker-site.onrender.com"
       },
       "android": {
         "buildType": "app-bundle"

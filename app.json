@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "CaseTrack",
+    "slug": "uscis-tracker",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "uscistracker",
+    "userInterfaceStyle": "automatic",
+    "icon": "./assets/images/icon.png",
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#08101f"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "plugins": [
+      "expo-router"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.yoges.uscistracker",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "backgroundColor": "#ffffff",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      }
+    },
+    "web": {
+      "favicon": "./assets/images/favicon.png"
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "13217c93-a8c6-4aa8-80a9-0b75136c09d1"
+      }
+    }
+  }
+}

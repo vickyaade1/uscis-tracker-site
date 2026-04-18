@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: uscis-tracker-backend
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    region: oregon
+    healthCheckPath: /health

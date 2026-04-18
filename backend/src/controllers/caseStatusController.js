@@ -3,7 +3,6 @@ const {
   hasUscisCredentials,
   getMaskedClientId,
 } = require("../config/env");
-const { getMockCaseStatus } = require("../services/mockCaseStatusService");
 const { getLiveCaseStatus } = require("../services/uscisCaseStatusService");
 const { HttpError } = require("../utils/httpError");
 const {
@@ -13,6 +12,29 @@ const {
 
 async function getCaseStatus(req, res) {
   const receiptNumber = normalizeReceiptNumber(req.body.receiptNumber);
+  const activeMode = process.env.USCIS_MODE || env.uscisMode;
+
+  if (activeMode === "mock") {
+    return res.json({
+      ok: true,
+      case: {
+        receiptNumber,
+        formType: "I-485",
+        statusCode: "case-actively-reviewing",
+        statusText: {
+          en: "Case is being actively reviewed",
+          es: "El caso está siendo revisado activamente",
+          hi: "मामले की सक्रिय समीक्षा की जा रही है",
+        },
+        statusDescription: {
+          en: "Your case is currently under review by USCIS.",
+          es: "Su caso está actualmente en revisión por USCIS.",
+          hi: "आपका मामला वर्तमान में USCIS द्वारा समीक्षा में है।",
+        },
+        updatedAt: new Date().toISOString(),
+      },
+    });
+  }
 
   console.log("[Case Status Controller] Incoming request", {
     receiptNumber,
@@ -62,22 +84,6 @@ async function getCaseStatus(req, res) {
       });
     }
 
-    console.log("[Case Status Controller] Using mock mode", {
-      receiptNumber,
-    });
-
-    const mockResult = await getMockCaseStatus(receiptNumber);
-
-    console.log("[Case Status Controller] Returning mock result", {
-      receiptNumber,
-      source: mockResult.source,
-      statusCode: mockResult.case.statusCode,
-    });
-
-    return res.json({
-      ok: true,
-      ...mockResult,
-    });
   } catch (error) {
     const statusCode = error.statusCode || 500;
     const message = error.message || "Could not fetch case status.";

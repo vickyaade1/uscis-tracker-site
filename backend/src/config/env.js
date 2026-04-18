@@ -2,8 +2,12 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
+const rawPort = process.env.PORT;
+const parsedPort = Number(rawPort);
+const safePort = Number.isInteger(parsedPort) && parsedPort > 0 ? parsedPort : 4000;
+
 const env = {
-  port: Number(process.env.PORT || 4000),
+  port: safePort,
   uscisMode: process.env.USCIS_MODE || "mock",
   uscisClientId: process.env.USCIS_CLIENT_ID || "",
   uscisClientSecret: process.env.USCIS_CLIENT_SECRET || "",
